@@ -19,7 +19,8 @@ export function App() {
   const { scrollTo } = useSmoothScroll();
   const [selectedPhoto, setSelectedPhoto] = useState<Photo | null>(null);
   const [frogClicks, setFrogClicks] = useState(0);
-  const [showSecretMessage, setShowSecretMessage] = useState(false);
+  const [secretView, setSecretView] = useState<null | "password" | "message">(null);
+  const [passwordInput, setPasswordInput] = useState("");
   const [isMobile, setIsMobile] = useState(() =>
     typeof window !== "undefined"
       ? window.innerWidth < MOBILE_BREAKPOINT
@@ -30,9 +31,26 @@ export function App() {
     const newCount = frogClicks + 1;
     setFrogClicks(newCount);
     if (newCount >= 5) {
-      setShowSecretMessage(true);
+      setSecretView("password");
       setFrogClicks(0);
     }
+  };
+
+  const handlePasswordSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (passwordInput === import.meta.env.VITE_FROG_PASSWORD) {
+      setSecretView("message");
+      setPasswordInput("");
+    } else {
+      // Wrong password - dismiss entirely
+      setSecretView(null);
+      setPasswordInput("");
+    }
+  };
+
+  const handleSecretClose = () => {
+    setSecretView(null);
+    setPasswordInput("");
   };
 
   // Handle responsive breakpoint changes
@@ -433,11 +451,11 @@ export function App() {
       {/* Lightbox */}
       <Lightbox photo={selectedPhoto} onClose={() => setSelectedPhoto(null)} />
 
-      {/* Secret Easter Egg Message */}
-      {showSecretMessage && (
+      {/* Secret Easter Egg Overlay */}
+      {secretView && (
         <div
           className='secret-message-overlay'
-          onClick={() => setShowSecretMessage(false)}
+          onClick={handleSecretClose}
         >
           <div
             className='secret-message-container'
@@ -445,37 +463,59 @@ export function App() {
           >
             <button
               className='secret-message-close'
-              onClick={() => setShowSecretMessage(false)}
+              onClick={handleSecretClose}
               aria-label='Close'
             >
               ×
             </button>
-            <div className='secret-message-content'>
-              <h3>You found the secret!</h3>
-              <p>
-                Chào cậu, nếu cậu tìm đc cái nè thì chắc cậu bt cậu là ai r nhỉ
-                :3
-                <br />
-                <br />
-                Tớ ko bt phải bắt đầu từ đâu, nhg mà cảm ơn cậu đã đi chơi với
-                tớ mấy ngày vừa rồi.
-                <br />
-                <br />
-                Xin lỗi hôm nọ nói có hơi bất ngờ nhg mà tớ muốn nói ra để đề
-                phòng ko có cơ hội nói ra nữa, lần trc lỡ một lần nên chừa r
-                :)))
-                <br />
-                <br />
-                Tớ hi vọng cậu có thể cho tớ một cơ hội để nghiêm túc với cậu
-                trong một mqh nè mặc dù là nó có hơi rắc rối một tí.
-                <br />
-                <br />
-                Hi vọng 2026 sẽ nhẹ nhàng với bạn.
-                <br />
-                <br />
-                Love u
-              </p>
-            </div>
+            
+            {secretView === "password" ? (
+              <div className='secret-password-prompt'>
+                <h3>🐸</h3>
+                <p>Enter the password to unlock</p>
+                <p className='secret-password-hint'>Hint: your birthday</p>
+                <form onSubmit={handlePasswordSubmit}>
+                  <input
+                    type='password'
+                    value={passwordInput}
+                    onChange={(e) => setPasswordInput(e.target.value)}
+                    placeholder='Password'
+                    autoFocus
+                    className='secret-password-input'
+                  />
+                  <button type='submit' className='secret-password-submit'>
+                    Unlock
+                  </button>
+                </form>
+              </div>
+            ) : (
+              <div className='secret-message-content'>
+                <h3>You found the secret!</h3>
+                <p>
+                  Chào cậu, nếu cậu tìm đc cái nè thì chắc cậu bt cậu là ai r nhỉ
+                  :3
+                  <br />
+                  <br />
+                  Tớ ko bt phải bắt đầu từ đâu, nhg mà cảm ơn cậu đã đi chơi với
+                  tớ mấy ngày vừa rồi.
+                  <br />
+                  <br />
+                  Xin lỗi hôm nọ nói có hơi bất ngờ nhg mà tớ muốn nói ra để đề
+                  phòng ko có cơ hội nói ra nữa, lần trc lỡ một lần nên chừa r
+                  :)))
+                  <br />
+                  <br />
+                  Tớ hi vọng cậu có thể cho tớ một cơ hội để nghiêm túc với cậu
+                  trong một mqh nè mặc dù là nó có hơi rắc rối một tí.
+                  <br />
+                  <br />
+                  Hi vọng 2026 sẽ nhẹ nhàng với bạn.
+                  <br />
+                  <br />
+                  Love u
+                </p>
+              </div>
+            )}
           </div>
         </div>
       )}
