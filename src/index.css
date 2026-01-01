@@ -1,0 +1,939 @@
+@import url("https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,300&family=Instrument+Serif:ital@0;1&display=swap");
+@import "tailwindcss";
+
+@theme {
+  /* Typography */
+  --font-display: "Instrument Serif", serif;
+  --font-headline: "Bebas Neue", sans-serif;
+  --font-body: "Crimson Pro", serif;
+
+  /* Colors - Black & White Editorial */
+  --color-black: #000000;
+  --color-off-black: #1a1a1a;
+  --color-gray: #666666;
+  --color-light-gray: #e5e5e5;
+  --color-off-white: #fafafa;
+  --color-white: #ffffff;
+}
+
+/* Base styles */
+html {
+  background-color: #fafafa;
+  color: #1a1a1a;
+  font-family: "Crimson Pro", serif;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  overflow-x: hidden;
+  background-color: #fafafa;
+}
+
+/* Lenis smooth scroll */
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+
+.lenis.lenis-smooth iframe {
+  pointer-events: none;
+}
+
+/* Typography utility classes */
+.font-display {
+  font-family: "Instrument Serif", serif !important;
+}
+
+.font-headline {
+  font-family: "Bebas Neue", sans-serif !important;
+}
+
+.font-body {
+  font-family: "Crimson Pro", serif !important;
+}
+
+/* Color utility classes */
+.bg-off-white {
+  background-color: #fafafa !important;
+}
+
+.bg-black {
+  background-color: #000000 !important;
+}
+
+.bg-light-gray {
+  background-color: #e5e5e5 !important;
+}
+
+.text-black {
+  color: #000000 !important;
+}
+
+.text-off-black {
+  color: #1a1a1a !important;
+}
+
+.text-gray {
+  color: #666666 !important;
+}
+
+.text-light-gray {
+  color: #e5e5e5 !important;
+}
+
+.text-white {
+  color: #ffffff !important;
+}
+
+.border-black {
+  border-color: #000000 !important;
+}
+
+.from-off-white {
+  --tw-gradient-from: #fafafa;
+}
+
+.via-off-white\/95 {
+  --tw-gradient-via: rgba(250, 250, 250, 0.95);
+}
+
+/* Month title styling */
+.month-title {
+  font-family: "Instrument Serif", serif;
+  font-size: 15vw;
+  line-height: 0.85;
+  letter-spacing: -0.02em;
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+  transform: rotate(180deg);
+  white-space: nowrap;
+}
+
+/* Year watermark */
+.year-watermark {
+  font-family: "Bebas Neue", sans-serif;
+  font-size: 25vw;
+  letter-spacing: 0.05em;
+  color: #e5e5e5;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.3;
+}
+
+/* Navigation text */
+.nav-text {
+  font-family: "Bebas Neue", sans-serif;
+  font-size: 0.75rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
+
+/* Content visibility optimization disabled - was causing scroll calculation issues */
+/*
+section[id] {
+  content-visibility: auto;
+  contain-intrinsic-size: 100vh 1200px;
+}
+*/
+
+/* Horizontal scroll wrapper */
+.horizontal-scroll-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+.horizontal-scroll-container {
+  display: flex;
+  flex-wrap: nowrap;
+  will-change: transform;
+}
+
+/* Intro Sentences Parallax Section */
+.intro-sentences-section {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 15vw;
+  height: 100vh;
+  width: 250vw;
+  flex-shrink: 0;
+  padding: 0 10vw;
+}
+
+.intro-sentence {
+  flex-shrink: 0;
+  will-change: transform, opacity;
+}
+
+.intro-sentence p {
+  font-family: "Instrument Serif", serif;
+  font-style: italic;
+  line-height: 1.2;
+  color: #1a1a1a;
+  margin: 0;
+}
+
+/* Sentence 1 - High up */
+.intro-sentence.sentence-1 {
+  transform: translateY(-28vh);
+  max-width: 800px;
+}
+
+.intro-sentence.sentence-1 p {
+  font-size: clamp(2.5rem, 5vw, 4rem);
+}
+
+/* Sentence 2 - Down low */
+.intro-sentence.sentence-2 {
+  transform: translateY(25vh);
+  max-width: 750px;
+}
+
+.intro-sentence.sentence-2 p {
+  font-size: clamp(2rem, 4vw, 3rem);
+}
+
+/* Sentence 3 - Up high again */
+.intro-sentence.sentence-3 {
+  transform: translateY(-18vh);
+  max-width: 800px;
+}
+
+.intro-sentence.sentence-3 p {
+  font-size: clamp(2rem, 4vw, 3rem);
+}
+
+/* Sentence 4 - Down, bold finale */
+.intro-sentence.sentence-4 {
+  transform: translateY(30vh);
+  max-width: 650px;
+}
+
+.intro-sentence.sentence-4 p {
+  font-size: clamp(2.5rem, 5vw, 4rem);
+  font-weight: 600;
+  font-style: normal;
+}
+
+/* Reflection Sentences Section - Centered */
+.reflection-sentences-section {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 40vw;
+  height: 100vh;
+  width: 700vw;
+  flex-shrink: 0;
+  padding: 0 20vw 0 20vw;
+  padding-right: 50vw;
+}
+
+.reflection-sentence {
+  flex-shrink: 0;
+  text-align: left;
+  max-width: 700px;
+  will-change: transform, opacity;
+}
+
+.reflection-sentence p {
+  font-family: "Crimson Pro", serif;
+  font-size: clamp(1.25rem, 2vw, 1.5rem);
+  line-height: 1.7;
+  color: #1a1a1a;
+  margin: 0 0 1.5rem 0;
+}
+
+.reflection-sentence p:last-child {
+  margin-bottom: 0;
+}
+
+.reflection-opening {
+  font-family: "Instrument Serif", serif !important;
+  font-style: italic;
+  font-size: clamp(1.75rem, 3vw, 2.5rem) !important;
+  line-height: 1.4 !important;
+}
+
+.reflection-heading {
+  font-family: "Bebas Neue", sans-serif;
+  font-size: clamp(2rem, 4vw, 3rem);
+  letter-spacing: 0.1em;
+  color: #000000;
+  margin: 0 0 1.5rem 0;
+  text-transform: uppercase;
+}
+
+.reflection-summary {
+  font-family: "Instrument Serif", serif !important;
+  font-style: italic;
+  font-size: clamp(1.5rem, 2.5vw, 2rem) !important;
+  line-height: 1.5 !important;
+}
+
+.reflection-goals {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  font-family: "Crimson Pro", serif;
+  font-size: clamp(1.25rem, 2vw, 1.5rem);
+  line-height: 2.2;
+  color: #1a1a1a;
+}
+
+.reflection-goals li {
+  position: relative;
+  padding-left: 2rem;
+}
+
+.reflection-goals li::before {
+  content: "—";
+  position: absolute;
+  left: 0;
+  color: #666666;
+}
+
+.reflection-closing {
+  font-family: "Instrument Serif", serif !important;
+  font-style: italic;
+  font-size: clamp(2rem, 4vw, 3rem) !important;
+  line-height: 1.3 !important;
+  color: #000000 !important;
+}
+
+/* Photo card styling */
+.photo-card {
+  position: relative;
+  overflow: hidden;
+  background-color: #e5e5e5;
+}
+
+/* Grayscale overlay for photo cards */
+.photo-card::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: gray;
+  mix-blend-mode: saturation;
+  pointer-events: none;
+  transition: opacity 0.5s ease;
+  z-index: 1;
+}
+
+.photo-card:hover::after {
+  opacity: 0;
+}
+
+.photo-card img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Selection styling */
+::selection {
+  background-color: #000000;
+  color: #ffffff;
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #e5e5e5;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #666666;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #1a1a1a;
+}
+
+/* Debug: visible divider */
+.bg-light-gray {
+  background-color: #e5e5e5 !important;
+}
+
+/* Bento Grid Layout */
+.bento-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 180px);
+  grid-template-rows: repeat(3, 180px);
+  grid-template-areas:
+    "a a b c"
+    "a a d c"
+    "e e f f";
+  gap: 12px;
+  height: fit-content;
+}
+
+.bento-item {
+  position: relative;
+  overflow: hidden;
+  border: 3px solid #000000;
+  background-color: #e5e5e5;
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.bento-item:hover {
+  transform: scale(1.02);
+  z-index: 10;
+}
+
+/* Grid area assignments */
+.bento-a {
+  grid-area: a;
+}
+.bento-b {
+  grid-area: b;
+}
+.bento-c {
+  grid-area: c;
+}
+.bento-d {
+  grid-area: d;
+}
+.bento-e {
+  grid-area: e;
+}
+.bento-f {
+  grid-area: f;
+}
+.bento-g {
+  grid-area: g;
+}
+.bento-h {
+  grid-area: h;
+}
+.bento-i {
+  grid-area: i;
+}
+.bento-j {
+  grid-area: j;
+}
+.bento-k {
+  grid-area: k;
+}
+.bento-l {
+  grid-area: l;
+}
+.bento-m {
+  grid-area: m;
+}
+.bento-n {
+  grid-area: n;
+}
+.bento-o {
+  grid-area: o;
+}
+
+.bento-image-wrapper {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background-color: #fff;
+}
+
+/* Grayscale overlay using mix-blend-mode (more performant than filter) */
+.bento-image-wrapper::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: gray;
+  mix-blend-mode: saturation;
+  pointer-events: none;
+  transition: opacity 0.5s ease;
+  z-index: 1;
+}
+
+.bento-item:hover .bento-image-wrapper::after {
+  opacity: 0;
+}
+
+/* Lazy image container */
+.lazy-image-container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+/* Skeleton loader */
+.skeleton-loader {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, #e5e5e5 0%, #f0f0f0 50%, #e5e5e5 100%);
+  background-size: 200% 100%;
+  animation: skeleton-shimmer 1.5s ease-in-out infinite;
+}
+
+@keyframes skeleton-shimmer {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+.bento-image-wrapper img,
+.bento-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.bento-item:hover .bento-image-wrapper img,
+.bento-item:hover .bento-image {
+  transform: scale(1.05);
+}
+
+/* January bento grid (default) */
+.bento-grid-january {
+  grid-template-areas:
+    "a a b c"
+    "a a d c"
+    "e e f f";
+}
+
+/* February bento grid - with video on left */
+.bento-grid-february {
+  grid-template-columns: 300px repeat(3, 140px);
+  grid-template-rows: repeat(3, 180px);
+  grid-template-areas:
+    "a b b c"
+    "a d e c"
+    "a f f f";
+}
+
+.bento-grid-february .bento-f img {
+  object-position: 0px -100px;
+}
+
+/* March bento grid */
+.bento-grid-march {
+  grid-template-columns: repeat(4, 180px);
+  grid-template-rows: repeat(3, 180px);
+  grid-template-areas:
+    "e e b c"
+    "e e f f"
+    "a d f f";
+}
+
+/* April bento grid - randomized layout */
+.bento-grid-april {
+  grid-template-columns: repeat(4, 180px);
+  grid-template-rows: repeat(3, 180px);
+  grid-template-areas:
+    "a a b c"
+    "d d b c"
+    "e f f f";
+}
+
+/* May bento grid - expanded horizontal layout (7 photos) */
+.bento-grid-may {
+  grid-template-columns: repeat(7, 160px);
+  grid-template-rows: repeat(3, 180px);
+  grid-template-areas:
+    "f f a b g c c"
+    "f f h h h c c"
+    "i i h h h c c";
+  gap: 12px;
+}
+
+/* Quote photo h is now large enough to use cover */
+.bento-grid-may .bento-h .bento-image-wrapper img {
+  object-fit: cover;
+}
+
+/* June bento grid - wide panoramic layout (15 photos) */
+.bento-grid-june {
+  grid-template-columns: repeat(8, 160px);
+  grid-template-rows: repeat(4, 150px);
+  grid-template-areas:
+    "a a b b d e e g"
+    "a a b b d e e h"
+    "i i j k l m m o"
+    "i i n n f m m o";
+  gap: 12px;
+}
+
+/* July bento grid - dynamic summer layout (9 photos) */
+.bento-grid-july {
+  grid-template-columns: repeat(6, 180px);
+  grid-template-rows: repeat(4, 180px);
+  grid-template-areas:
+    "a a b c g d"
+    "a a f f g d"
+    "h h e i i i"
+    "h h e i i i";
+  gap: 12px;
+}
+
+/* August bento grid - video feature layout (9 photos) */
+.bento-grid-august {
+  grid-template-columns: repeat(6, 180px);
+  grid-template-rows: repeat(3, 180px);
+  grid-template-areas:
+    "e e a a b c"
+    "e e d d g i"
+    "e e d d h i";
+  gap: 12px;
+}
+
+/* August video styling */
+.bento-grid-august .bento-e .bento-image-wrapper video {
+  object-fit: cover;
+}
+
+/* September bento grid - balanced 10-photo layout */
+.bento-grid-september {
+  grid-template-columns: repeat(6, 180px);
+  grid-template-rows: repeat(3, 180px);
+  grid-template-areas:
+    "a a f f f f"
+    "a a b b e c"
+    "j i b b g d";
+  gap: 12px;
+}
+
+.bento-grid-september .bento-f img {
+  object-fit: contain;
+}
+
+/* October bento grid - 8 photos */
+.bento-grid-october {
+  grid-template-columns: repeat(4, 180px);
+  grid-template-rows: repeat(3, 180px);
+  grid-template-areas:
+    "a a b b"
+    "a a c d"
+    "e f g h";
+  gap: 12px;
+}
+
+/* November bento grid - creative layout (8 photos) */
+.bento-grid-november {
+  grid-template-columns: repeat(5, 180px);
+  grid-template-rows: repeat(4, 180px);
+  grid-template-areas:
+    "a a h d i"
+    "a a g b b"
+    "j k k b b"
+    "j k k b b";
+  gap: 12px;
+}
+
+/* December bento grid - grand finale (15 photos) */
+.bento-grid-december {
+  grid-template-columns: repeat(6, 180px);
+  grid-template-rows: repeat(4, 180px);
+  grid-template-areas:
+    "a a b b c d"
+    "a a b b e f"
+    "g h i i j k"
+    "l m i i n o";
+  gap: 12px;
+}
+/* Video styling */
+.bento-video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.bento-item:hover .bento-video {
+  transform: scale(1.05);
+}
+
+/* Large screens - bigger bento */
+@media (min-width: 1200px) {
+  .bento-grid {
+    grid-template-columns: repeat(4, 200px);
+    grid-template-rows: repeat(3, 200px);
+    gap: 16px;
+  }
+
+  .bento-grid-february {
+    grid-template-columns: 340px repeat(3, 160px);
+    grid-template-rows: repeat(3, 200px);
+  }
+
+  .bento-grid-march {
+    grid-template-columns: repeat(4, 200px);
+    grid-template-rows: repeat(3, 200px);
+  }
+
+  .bento-grid-april {
+    grid-template-columns: repeat(4, 200px);
+    grid-template-rows: repeat(3, 200px);
+  }
+
+  .bento-grid-may {
+    grid-template-columns: repeat(7, 180px);
+    grid-template-rows: repeat(3, 200px);
+    gap: 16px;
+  }
+
+  .bento-grid-june {
+    grid-template-columns: repeat(8, 180px);
+    grid-template-rows: repeat(4, 170px);
+    gap: 16px;
+  }
+
+  .bento-grid-july {
+    grid-template-columns: repeat(6, 200px);
+    grid-template-rows: repeat(4, 200px);
+    gap: 16px;
+  }
+
+  .bento-grid-august {
+    grid-template-columns: repeat(6, 200px);
+    grid-template-rows: repeat(3, 200px);
+    gap: 16px;
+  }
+
+  .bento-grid-september {
+    grid-template-columns: repeat(6, 200px);
+    grid-template-rows: repeat(3, 200px);
+    gap: 16px;
+  }
+
+  .bento-grid-october {
+    grid-template-columns: repeat(4, 200px);
+    grid-template-rows: repeat(3, 200px);
+    gap: 16px;
+  }
+
+  .bento-grid-november {
+    grid-template-columns: repeat(5, 200px);
+    grid-template-rows: repeat(4, 200px);
+    gap: 16px;
+  }
+
+  .bento-grid-december {
+    grid-template-columns: repeat(6, 200px);
+    grid-template-rows: repeat(4, 200px);
+    gap: 16px;
+  }
+}
+
+/* Extra large screens */
+@media (min-width: 1600px) {
+  .bento-grid {
+    grid-template-columns: repeat(4, 220px);
+    grid-template-rows: repeat(3, 220px);
+    gap: 18px;
+  }
+
+  .bento-grid-february {
+    grid-template-columns: 380px repeat(3, 180px);
+    grid-template-rows: repeat(3, 220px);
+  }
+
+  .bento-grid-march {
+    grid-template-columns: repeat(4, 220px);
+    grid-template-rows: repeat(3, 220px);
+  }
+
+  .bento-grid-april {
+    grid-template-columns: repeat(4, 220px);
+    grid-template-rows: repeat(3, 220px);
+  }
+
+  .bento-grid-may {
+    grid-template-columns: repeat(7, 200px);
+    grid-template-rows: repeat(3, 220px);
+    gap: 18px;
+  }
+
+  .bento-grid-june {
+    grid-template-columns: repeat(8, 200px);
+    grid-template-rows: repeat(4, 190px);
+    gap: 18px;
+  }
+
+  .bento-grid-july {
+    grid-template-columns: repeat(6, 220px);
+    grid-template-rows: repeat(4, 220px);
+    gap: 18px;
+  }
+
+  .bento-grid-august {
+    grid-template-columns: repeat(6, 220px);
+    grid-template-rows: repeat(3, 220px);
+    gap: 18px;
+  }
+
+  .bento-grid-september {
+    grid-template-columns: repeat(6, 220px);
+    grid-template-rows: repeat(3, 220px);
+    gap: 18px;
+  }
+
+  .bento-grid-october {
+    grid-template-columns: repeat(4, 220px);
+    grid-template-rows: repeat(3, 220px);
+    gap: 18px;
+  }
+
+  .bento-grid-november {
+    grid-template-columns: repeat(5, 220px);
+    grid-template-rows: repeat(4, 220px);
+    gap: 18px;
+  }
+
+  .bento-grid-december {
+    grid-template-columns: repeat(6, 220px);
+    grid-template-rows: repeat(4, 220px);
+    gap: 18px;
+  }
+}
+
+/* Lightbox styles */
+.lightbox-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  background-color: rgba(0, 0, 0, 0.95);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+}
+
+.lightbox-close {
+  position: absolute;
+  top: 1.5rem;
+  right: 1.5rem;
+  z-index: 101;
+  background: transparent;
+  border: none;
+  color: #ffffff;
+  cursor: pointer;
+  padding: 0.5rem;
+  opacity: 0.7;
+  transition:
+    opacity 0.2s ease,
+    transform 0.2s ease;
+}
+
+.lightbox-close:hover {
+  opacity: 1;
+  transform: scale(1.1);
+}
+
+.lightbox-content {
+  max-width: 90vw;
+  max-height: 90vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.lightbox-media {
+  max-width: 90vw;
+  max-height: 90vh;
+  object-fit: contain;
+  border: 4px solid #ffffff;
+}
+
+/* Easter Egg - Frog */
+.frog-easter-egg {
+  cursor: pointer;
+  display: inline-block;
+  user-select: none;
+  transition: transform 0.15s ease;
+}
+
+.frog-easter-egg:hover {
+  transform: scale(1.2);
+}
+
+.frog-easter-egg:active {
+  transform: scale(0.9);
+}
+
+/* Secret Message Modal */
+.secret-message-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  background: rgba(0, 0, 0, 0.95);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+}
+
+.secret-message-container {
+  position: relative;
+  max-width: 450px;
+  text-align: left;
+}
+
+.secret-message-close {
+  position: absolute;
+  top: -2rem;
+  right: 0;
+  background: transparent;
+  border: none;
+  color: #ffffff;
+  font-size: 2rem;
+  cursor: pointer;
+  line-height: 1;
+  padding: 0.25rem 0.5rem;
+}
+
+.secret-message-close:hover {
+  opacity: 0.7;
+}
+
+.secret-message-content {
+  color: #ffffff;
+}
+
+.secret-frog {
+  font-size: 3rem;
+  display: block;
+  margin-bottom: 1.5rem;
+}
+
+.secret-message-content h3 {
+  font-family: "Instrument Serif", serif;
+  font-size: 1.5rem;
+  font-style: italic;
+  margin: 0 0 1.5rem 0;
+  color: #ffffff;
+}
+
+.secret-message-content p {
+  font-family: "Crimson Pro", serif;
+  font-size: 1.1rem;
+  line-height: 1.8;
+  margin: 0;
+  color: #ffffff;
+}
