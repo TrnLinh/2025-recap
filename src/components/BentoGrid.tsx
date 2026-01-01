@@ -11,12 +11,16 @@ interface BentoGridProps {
   photos: Photo[];
   monthId: string;
   onPhotoClick?: (photo: Photo) => void;
+  isMobile?: boolean;
 }
 
-export function BentoGrid({ photos, monthId, onPhotoClick }: BentoGridProps) {
+export function BentoGrid({ photos, monthId, onPhotoClick, isMobile = false }: BentoGridProps) {
   const gridRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    // Skip GSAP animations on mobile - not needed with vertical scroll
+    if (isMobile) return;
+
     const grid = gridRef.current;
     if (!grid) return;
 
@@ -47,7 +51,7 @@ export function BentoGrid({ photos, monthId, onPhotoClick }: BentoGridProps) {
     }, 150);
 
     return () => clearTimeout(timeout);
-  }, [monthId]);
+  }, [monthId, isMobile]);
 
   return (
     <div ref={gridRef} className={`bento-grid bento-grid-${monthId}`}>

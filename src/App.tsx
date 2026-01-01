@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useCallback } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useSmoothScroll } from "./hooks/useSmoothScroll";
@@ -9,6 +9,8 @@ import { MONTHS, type Photo } from "./data/gallery";
 
 gsap.registerPlugin(ScrollTrigger);
 
+const MOBILE_BREAKPOINT = 768;
+
 export function App() {
   const wrapperRef = useRef<HTMLDivElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -18,6 +20,11 @@ export function App() {
   const [selectedPhoto, setSelectedPhoto] = useState<Photo | null>(null);
   const [frogClicks, setFrogClicks] = useState(0);
   const [showSecretMessage, setShowSecretMessage] = useState(false);
+  const [isMobile, setIsMobile] = useState(() =>
+    typeof window !== "undefined"
+      ? window.innerWidth < MOBILE_BREAKPOINT
+      : false
+  );
 
   const handleFrogClick = () => {
     const newCount = frogClicks + 1;
@@ -28,7 +35,26 @@ export function App() {
     }
   };
 
+  // Handle responsive breakpoint changes
+  const handleResize = useCallback(() => {
+    const mobile = window.innerWidth < MOBILE_BREAKPOINT;
+    setIsMobile(mobile);
+  }, []);
+
   useEffect(() => {
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, [handleResize]);
+
+  // Horizontal scroll effect - only on desktop
+  useEffect(() => {
+    // Skip horizontal scroll setup on mobile
+    if (isMobile) {
+      // Kill any existing ScrollTrigger instances
+      ScrollTrigger.getAll().forEach((st) => st.kill());
+      return;
+    }
+
     const wrapper = wrapperRef.current;
     const container = containerRef.current;
 
@@ -117,12 +143,12 @@ export function App() {
       });
     }
 
-    // Handle resize
-    const handleResize = () => {
+    // Handle resize for ScrollTrigger refresh
+    const handleScrollTriggerRefresh = () => {
       ScrollTrigger.refresh();
     };
 
-    window.addEventListener("resize", handleResize);
+    window.addEventListener("resize", handleScrollTriggerRefresh);
 
     // Refresh ScrollTrigger after content loads to ensure proper width calculation
     const refreshTimeout = setTimeout(() => {
@@ -136,7 +162,7 @@ export function App() {
     window.addEventListener("load", handleLoad);
 
     return () => {
-      window.removeEventListener("resize", handleResize);
+      window.removeEventListener("resize", handleScrollTriggerRefresh);
       window.removeEventListener("load", handleLoad);
       clearTimeout(refreshTimeout);
       sentenceAnimations.forEach((anim) => {
@@ -150,7 +176,7 @@ export function App() {
       tween.scrollTrigger?.kill();
       tween.kill();
     };
-  }, []);
+  }, [isMobile]);
 
   return (
     <div
@@ -164,14 +190,16 @@ export function App() {
 
       {/* Header */}
       <header
-        className='fixed left-0 right-0 top-0 z-50 flex items-center justify-between px-8 pb-12 pt-6'
+        className={`fixed left-0 right-0 top-0 z-50 flex items-center justify-between pb-12 pt-6 ${
+          isMobile ? "px-4 pb-8" : "px-8"
+        }`}
         style={{
           background:
             "linear-gradient(to bottom, #fafafa, rgba(250,250,250,0.95), transparent)",
         }}
       >
         <h1
-          className='font-headline text-2xl tracking-widest'
+          className={`font-headline tracking-widest ${isMobile ? "text-lg" : "text-2xl"}`}
           style={{ color: "#000000" }}
         >
           2025's Recap
@@ -185,15 +213,21 @@ export function App() {
       <div ref={wrapperRef} className='horizontal-scroll-wrapper'>
         <div ref={containerRef} className='horizontal-scroll-container'>
           {/* Intro Section */}
-          <section className='flex h-screen w-screen flex-shrink-0 flex-col items-center justify-center px-8'>
+          <section
+            className={`flex flex-col items-center justify-center ${
+              isMobile
+                ? "intro-section-mobile min-h-screen w-full px-6 pt-20"
+                : "h-screen w-screen flex-shrink-0 px-8"
+            }`}
+          >
             <h2
-              className='font-display text-6xl italic md:text-8xl lg:text-9xl'
+              className={`font-display italic ${isMobile ? "text-5xl" : "text-6xl md:text-8xl lg:text-9xl"}`}
               style={{ color: "#000000" }}
             >
               Twenty
             </h2>
             <h2
-              className='font-display text-6xl md:text-8xl lg:text-9xl'
+              className={`font-display ${isMobile ? "text-5xl" : "text-6xl md:text-8xl lg:text-9xl"}`}
               style={{ color: "#000000" }}
             >
               Twenty-Five
@@ -212,7 +246,7 @@ export function App() {
                 SCROLL
               </span>
               <svg
-                className='h-4 w-4 animate-pulse'
+                className={`h-4 w-4 animate-pulse ${isMobile ? "rotate-90" : ""}`}
                 fill='none'
                 viewBox='0 0 24 24'
                 stroke='currentColor'
@@ -256,6 +290,7 @@ export function App() {
               month={month}
               index={index}
               onPhotoClick={setSelectedPhoto}
+              isMobile={isMobile}
             />
           ))}
 
@@ -365,11 +400,21 @@ export function App() {
           </section>
 
           {/* Outro Section */}
-          <section className='flex h-screen w-screen flex-shrink-0 flex-col items-center justify-center px-8'>
-            <h2 className='font-display text-5xl italic text-black md:text-7xl lg:text-8xl'>
+          <section
+            className={`flex flex-col items-center justify-center ${
+              isMobile
+                ? "outro-section-mobile min-h-[60vh] w-full px-6 py-16"
+                : "h-screen w-screen flex-shrink-0 px-8"
+            }`}
+          >
+            <h2
+              className={`font-display italic text-black ${isMobile ? "text-4xl" : "text-5xl md:text-7xl lg:text-8xl"}`}
+            >
               Until
             </h2>
-            <h2 className='font-display text-5xl text-black md:text-7xl lg:text-8xl'>
+            <h2
+              className={`font-display text-black ${isMobile ? "text-4xl" : "text-5xl md:text-7xl lg:text-8xl"}`}
+            >
               Next Year
             </h2>
             <p className='mt-8 max-w-md text-center font-body text-lg text-gray'>
@@ -383,7 +428,7 @@ export function App() {
       </div>
 
       {/* Bottom Navigation */}
-      <MonthNav scrollTo={scrollTo} />
+      <MonthNav scrollTo={scrollTo} isMobile={isMobile} />
 
       {/* Lightbox */}
       <Lightbox photo={selectedPhoto} onClose={() => setSelectedPhoto(null)} />

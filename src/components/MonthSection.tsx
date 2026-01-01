@@ -11,17 +11,22 @@ interface MonthSectionProps {
   month: MonthData;
   index: number;
   onPhotoClick?: (photo: Photo) => void;
+  isMobile?: boolean;
 }
 
 export function MonthSection({
   month,
   index,
   onPhotoClick,
+  isMobile = false,
 }: MonthSectionProps) {
   const sectionRef = useRef<HTMLElement>(null);
   const titleRef = useRef<HTMLHeadingElement>(null);
 
   useEffect(() => {
+    // Skip GSAP animations on mobile
+    if (isMobile) return;
+
     const section = sectionRef.current;
     const title = titleRef.current;
     if (!section || !title) return;
@@ -69,10 +74,64 @@ export function MonthSection({
     }, 100);
 
     return () => clearTimeout(timeout);
-  }, []);
+  }, [isMobile]);
 
   const isBento = month.layout === "bento";
 
+  // Mobile layout
+  if (isMobile) {
+    return (
+      <section
+        ref={sectionRef}
+        id={month.id}
+        className="month-section-mobile"
+        data-month-index={index}
+      >
+        {/* Month Title - Horizontal on mobile */}
+        <div className="month-title-wrapper">
+          <h2
+            ref={titleRef}
+            className="month-title select-none"
+            style={{ color: "#000000" }}
+          >
+            {month.name}
+          </h2>
+        </div>
+
+        {/* Photo Content - Bento grid */}
+        {isBento ? (
+          <div className="w-full">
+            <BentoGrid
+              photos={month.photos}
+              monthId={month.id}
+              onPhotoClick={onPhotoClick}
+              isMobile={isMobile}
+            />
+          </div>
+        ) : (
+          <div className="grid grid-cols-2 gap-2 w-full">
+            {month.photos.map((photo, photoIndex) => (
+              <PhotoCard
+                key={photo.id}
+                photo={photo}
+                index={photoIndex}
+                onPhotoClick={onPhotoClick}
+              />
+            ))}
+          </div>
+        )}
+
+        {/* Section Divider - subtle line on mobile */}
+        {index < 11 && (
+          <div className="w-full flex justify-center py-8">
+            <div className="w-16 h-px" style={{ backgroundColor: "#e5e5e5" }} />
+          </div>
+        )}
+      </section>
+    );
+  }
+
+  // Desktop layout
   return (
     <section
       ref={sectionRef}
@@ -98,6 +157,7 @@ export function MonthSection({
             photos={month.photos}
             monthId={month.id}
             onPhotoClick={onPhotoClick}
+            isMobile={isMobile}
           />
         </div>
       ) : (

@@ -1,5 +1,7 @@
 import { useRef, useEffect, useState } from "react";
 
+const MOBILE_BREAKPOINT = 768;
+
 interface LazyVideoProps {
   src: string;
   className?: string;
@@ -7,8 +9,8 @@ interface LazyVideoProps {
 
 export function LazyVideo({ src, className }: LazyVideoProps) {
   const videoRef = useRef<HTMLVideoElement>(null);
-  const [isVisible, setIsVisible] = useState(false);
-  const [hasLoaded, setHasLoaded] = useState(false);
+  const isMobile = typeof window !== "undefined" && window.innerWidth < MOBILE_BREAKPOINT;
+  const [hasLoaded, setHasLoaded] = useState(isMobile); // Load immediately on mobile
 
   useEffect(() => {
     const video = videoRef.current;
@@ -18,7 +20,6 @@ export function LazyVideo({ src, className }: LazyVideoProps) {
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
-            setIsVisible(true);
             // Load video source on first visibility
             if (!hasLoaded) {
               setHasLoaded(true);
@@ -28,7 +29,6 @@ export function LazyVideo({ src, className }: LazyVideoProps) {
               // Autoplay may be blocked, that's okay
             });
           } else {
-            setIsVisible(false);
             // Pause when not visible to save resources
             video.pause();
           }
@@ -51,13 +51,11 @@ export function LazyVideo({ src, className }: LazyVideoProps) {
   return (
     <video
       ref={videoRef}
-      // Only set src after first visibility (lazy load)
       src={hasLoaded ? src : undefined}
       loop
       muted
       playsInline
       className={className}
-      // Preload metadata only after becoming visible
       preload={hasLoaded ? "auto" : "none"}
     />
   );
