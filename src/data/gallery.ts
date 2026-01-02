@@ -16,6 +16,11 @@ export interface MonthData {
   layout?: "strip" | "bento";
 }
 
+export interface PumSection {
+  date: string | null;
+  images: string[];
+}
+
 export const MONTHS: MonthData[] = [
   {
     id: "january",
@@ -218,6 +223,91 @@ export const MONTHS: MonthData[] = [
       { id: "dec-13", src: "/photo/december/13.webp", gridArea: "m" },
       { id: "dec-14", src: "/photo/december/14.webp", gridArea: "n" },
       { id: "dec-15", src: "/photo/december/15.webp", gridArea: "o" },
+    ],
+  },
+];
+
+export const PUM_SECTIONS: PumSection[] = [
+  {
+    date: "Nov 2022",
+    images: [
+      "IMG_2203.webp",
+      "IMG_2204.webp",
+      "IMG_2205.webp",
+      "IMG_2206.webp",
+      "IMG_2207.webp",
+      "IMG_2208.webp",
+    ],
+  },
+  {
+    date: "Dec 2022",
+    images: ["IMG_2209.webp", "IMG_2210.webp"],
+  },
+  {
+    date: "Jan 2023",
+    images: ["IMG_2211.webp", "IMG_2212.webp"],
+  },
+  {
+    date: "Feb 2023",
+    images: ["IMG_2213.webp", "IMG_2214.webp"],
+  },
+  {
+    date: "Mar 2023",
+    images: [
+      "IMG_2215.webp",
+      "IMG_2216.webp",
+      "IMG_2217.webp",
+      "IMG_2218.webp",
+      "IMG_2219.webp",
+      "IMG_2220.webp",
+      "IMG_2221.webp",
+      "IMG_2222.webp",
+    ],
+  },
+  {
+    date: "Jun 2023",
+    images: ["IMG_2223.webp"],
+  },
+  {
+    date: "Dec 2023",
+    images: [
+      "IMG_2224.webp",
+      "IMG_2225.webp",
+      "IMG_2226.webp",
+      "IMG_2238.webp",
+    ],
+  },
+  {
+    date: "Feb 2024",
+    images: ["IMG_2227.webp", "IMG_2228.webp"],
+  },
+  {
+    date: "Jun 2024",
+    images: ["IMG_2229.webp", "IMG_2230.webp", "IMG_1828.webp"],
+  },
+  {
+    date: "Oct 2024",
+    images: [
+      "IMG_2231.webp",
+      "IMG_2232.webp",
+      "IMG_2233.webp",
+      "IMG_2234.webp",
+      "IMG_1938.webp",
+      "IMG_2236.webp",
+      "IMG_1936.webp",
+    ],
+  },
+  {
+    date: "Dec 2025",
+    images: [
+      "IMG_1775.webp",
+      "IMG_1778.webp",
+      "IMG_1935.webp",
+      "IMG_2068.webp",
+      "IMG_2069 2.webp",
+      "IMG_2070.webp",
+      "IMG_2071 2.webp",
+      "IMG_2240.webp",
     ],
   },
 ];

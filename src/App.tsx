@@ -1,17 +1,18 @@
 import { useEffect, useRef, useState, useCallback } from "react";
+import { Routes, Route } from "react-router";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useSmoothScroll } from "./hooks/useSmoothScroll";
 import { MonthSection } from "./components/MonthSection";
 import { MonthNav } from "./components/MonthNav";
 import { Lightbox } from "./components/Lightbox";
-import { MONTHS, type Photo } from "./data/gallery";
+import { MONTHS, PUM_SECTIONS, type Photo } from "./data/gallery";
 
 gsap.registerPlugin(ScrollTrigger);
 
 const MOBILE_BREAKPOINT = 768;
 
-export function App() {
+function HomePage() {
   const wrapperRef = useRef<HTMLDivElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const introSentencesRef = useRef<HTMLElement>(null);
@@ -480,6 +481,60 @@ export function App() {
         </div>
       )}
     </div>
+  );
+}
+
+function Pum() {
+  const [selectedPhoto, setSelectedPhoto] = useState<Photo | null>(null);
+
+  const handleImageClick = (filename: string) => {
+    setSelectedPhoto({
+      id: filename,
+      src: `/photo/pum/${encodeURIComponent(filename)}`,
+      type: "image",
+    });
+  };
+
+  return (
+    <div className='pum-page'>
+      <header className='pum-header'>
+        <h1 className='font-display'>Pum</h1>
+      </header>
+
+      {PUM_SECTIONS.map((section, sectionIndex) => (
+        <div key={sectionIndex} className='pum-section'>
+          {section.date && (
+            <h2 className='pum-section-date font-headline'>{section.date}</h2>
+          )}
+          <div className='pum-gallery'>
+            {section.images.map((filename) => (
+              <div
+                key={filename}
+                className='pum-gallery-item'
+                onClick={() => handleImageClick(filename)}
+              >
+                <img
+                  src={`/photo/pum/${encodeURIComponent(filename)}`}
+                  alt=''
+                  loading='lazy'
+                />
+              </div>
+            ))}
+          </div>
+        </div>
+      ))}
+
+      <Lightbox photo={selectedPhoto} onClose={() => setSelectedPhoto(null)} />
+    </div>
+  );
+}
+
+export function App() {
+  return (
+    <Routes>
+      <Route path='/' element={<HomePage />} />
+      <Route path='/pum' element={<Pum />} />
+    </Routes>
   );
 }
 
